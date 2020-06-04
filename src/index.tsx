@@ -1,11 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import 'react-hot-loader'
+import 'reflect-metadata'
+import 'localforage'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import moment from 'moment'
+import * as OfflinePluginRuntime from 'offline-plugin/runtime'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+moment.locale('ru')
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(<App/>, document.getElementById('root'))
+
+if (process.env.NODE_ENV === 'production') {
+  OfflinePluginRuntime.install({
+    onUpdateReady: () => OfflinePluginRuntime.applyUpdate(),
+    onUpdated: () => window.location.reload(),
+  })
+}
