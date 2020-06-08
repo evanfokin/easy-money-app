@@ -6,6 +6,7 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import TerserWebpackPlugin from 'terser-webpack-plugin'
 import OfflinePlugin from 'offline-plugin'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import * as dotEnv from 'dotenv'
 
 dotEnv.config()
@@ -19,6 +20,7 @@ const hashing = (name: string, extension: string) => {
 
 const config: webpack.Configuration & { devServer?: webpackDevServer.Configuration } = {
   mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? 'source-map' : 'eval-source-map',
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -74,28 +76,28 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
     new webpack.ProvidePlugin({
       'window.SQL': 'sql.js/dist/sql-wasm.js'
     }),
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'PUBLIC_URL']),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development'
+    }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: '' },
         { from: path.resolve(__dirname, 'public'), to: '' }
-      ]
+      ],
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public/index.html')
+      template: path.resolve(__dirname, 'public/index.html'),
+      inject: true,
+      minify: true
     }),
-    new OfflinePlugin({
-      safeToUseOptionalCaches: true,
-      appShell: '/',
-      ServiceWorker: { events: true, navigateFallbackURL: '/', },
-      AppCache: { events: true, FALLBACK: { '/': '/index.html' } }
-    })
-    // new ForkTsCheckerWebpackPlugin()
+    new ForkTsCheckerWebpackPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    https: true
   },
   optimization: {
     minimize: isProduction,
@@ -121,6 +123,18 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
   node: {
     fs: 'empty'
   }
+}
+
+if (isProduction) {
+  config.plugins.push(
+    new OfflinePlugin({
+      publicPath: '/',
+      appShell: '/',
+      safeToUseOptionalCaches: true,
+      ServiceWorker: { events: true, navigateFallbackURL: '/', },
+      AppCache: { events: true, FALLBACK: { '/': '/index.html' } }
+    }),
+  )
 }
 
 export default config
