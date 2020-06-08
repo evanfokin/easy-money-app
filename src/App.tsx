@@ -9,7 +9,8 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  setupConfig
+  setupConfig,
+  getConfig
 } from '@ionic/react'
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -38,11 +39,13 @@ import TransactionsList from './pages/transactions/TransactionsList'
 import TransactionEdit from './pages/transactions/TransactionEdit'
 import { About } from './pages/settings/About'
 
-setupConfig({
-  swipeBackEnabled: false,
-  backButtonText: 'Назад',
-  mode: 'ios',
-})
+if (!getConfig()) {
+  setupConfig({
+    swipeBackEnabled: false,
+    backButtonText: 'Назад',
+    mode: 'ios',
+  })
+}
 
 const connectionPromise = createConnection()
 
