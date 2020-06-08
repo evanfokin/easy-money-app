@@ -1,11 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { TransactionType } from '../helpers/transaction-type'
 import { Transaction } from './Transaction'
 import { Icons } from '../helpers/icons'
 
 @Entity()
 export class Category {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number
 
   @Column('varchar')
@@ -23,4 +23,13 @@ export class Category {
 
   @OneToMany(() => Transaction, transaction => transaction.category)
   transactions: Transaction[]
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
+
+  @Column('datetime', { nullable: true })
+  deletedAt: Date
 }

@@ -1,9 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { Category } from './Category'
 
 @Entity()
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number
 
   @Column('integer')
@@ -15,9 +15,18 @@ export class Transaction {
   @Column('text', { default: '' })
   comment: string
 
-  @Column('date', { nullable: true })
+  @Column('datetime')
   date: Date
 
   @ManyToOne(() => Category, category => category.transactions)
   category: Category
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
+
+  @Column('datetime', { nullable: true })
+  deletedAt: Date
 }

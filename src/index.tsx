@@ -1,6 +1,5 @@
 import 'react-hot-loader'
 import 'reflect-metadata'
-import 'localforage'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
