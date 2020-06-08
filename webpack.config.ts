@@ -15,7 +15,7 @@ const { NODE_ENV } = process.env
 const isProduction = NODE_ENV === 'production'
 
 const hashing = (name: string, extension: string) => {
-  return `${name}.${isProduction ? '[contenthash].' : ''}${extension}`
+  return `${name}.${isProduction ? '[hash].' : ''}${extension}`
 }
 
 const config: webpack.Configuration & { devServer?: webpackDevServer.Configuration } = {
