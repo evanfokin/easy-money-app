@@ -25,7 +25,7 @@ import { TransactionType } from '../../helpers/transaction-type'
 import { trashOutline } from 'ionicons/icons'
 import { Transaction } from '../../entities/Transaction'
 
-export class Categories extends React.Component<Props, State> {
+export class CategoriesPage extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
@@ -47,13 +47,14 @@ export class Categories extends React.Component<Props, State> {
 
   async fetch () {
     this.setState({ loading: true })
-    this.setState({ categories: await this.categoriesRepo.find({ type: this.type }) })
+    this.setState({ categories: await this.categoriesRepo.find({ type: this.type, deletedAt: null }) })
     this.setState({ loading: false })
   }
 
-  async remove (id: number) {
-    await this.transactionsRepo.delete({ categoryId: id })
-    await this.categoriesRepo.delete({ id })
+  async remove (id: string) {
+    const deletedAt = new Date()
+    await this.transactionsRepo.update({ categoryId: id }, { deletedAt, updatedAt: deletedAt })
+    await this.categoriesRepo.update(id, { deletedAt, updatedAt: deletedAt })
     await this.fetch()
   }
 
@@ -111,4 +112,4 @@ interface State {
   loading: boolean
 }
 
-export default withIonLifeCycle(Categories)
+export default withIonLifeCycle(CategoriesPage)

@@ -19,6 +19,7 @@ import {
   IonListHeader,
   IonNote,
   IonPage,
+  IonProgressBar,
   IonText,
   IonTitle,
   IonToolbar,
@@ -32,14 +33,14 @@ import _groupBy from 'lodash/groupBy'
 import moment from 'moment'
 import { formatNumber } from '../../helpers/format-number'
 
-class TransactionsList extends React.Component<Props, State> {
+class TransactionsPage extends React.Component<Props, State> {
   static transactionsChunk = 10
 
   constructor (props) {
     super(props)
     this.state = {
       transactions: [],
-      visibleSize: TransactionsList.transactionsChunk,
+      visibleSize: TransactionsPage.transactionsChunk,
       loading: false
     }
   }
@@ -50,10 +51,10 @@ class TransactionsList extends React.Component<Props, State> {
     return this.fetch()
   }
 
-  ionViewDidLeave () {
+  ionViewWillLeave () {
     this.setState({
-      transactions: this.state.transactions.splice(0, TransactionsList.transactionsChunk),
-      visibleSize: TransactionsList.transactionsChunk
+      transactions: this.state.transactions.splice(0, TransactionsPage.transactionsChunk),
+      visibleSize: TransactionsPage.transactionsChunk
     })
   }
 
@@ -61,7 +62,7 @@ class TransactionsList extends React.Component<Props, State> {
     this.setState({ loading: true })
 
     const transactions = _orderBy(
-      await this.transactionsRepo.find({ relations: ['category'] }),
+      await this.transactionsRepo.find({ where: { deletedAt: null }, relations: ['category'] }),
       ['date'],
       ['desc']
     )
@@ -70,8 +71,9 @@ class TransactionsList extends React.Component<Props, State> {
     this.setState({ loading: false })
   }
 
-  async remove (id: number) {
-    await this.transactionsRepo.delete({ id })
+  async remove (id: string) {
+    const deletedAt = new Date()
+    await this.transactionsRepo.update(id, { deletedAt, updatedAt: deletedAt })
     await this.fetch()
   }
 
@@ -105,7 +107,7 @@ class TransactionsList extends React.Component<Props, State> {
   render () {
     return (
       <IonPage>
-        <IonHeader translucent={true}>
+        <IonHeader>
           <IonToolbar>
             <IonTitle>Транзакции</IonTitle>
           </IonToolbar>
@@ -116,7 +118,7 @@ class TransactionsList extends React.Component<Props, State> {
               <IonTitle size="large">Транзакции</IonTitle>
             </IonToolbar>
           </IonHeader>
-
+          {this.state.loading ? <IonProgressBar type="indeterminate"/> : null}
           <IonList style={{ marginBottom: 100 }}>
             {
               Object.keys(this.groupedTransactions).map(title => (
@@ -212,4 +214,4 @@ interface State {
   visibleSize: number
 }
 
-export default withIonLifeCycle(TransactionsList)
+export default withIonLifeCycle(TransactionsPage)

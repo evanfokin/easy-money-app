@@ -11,7 +11,7 @@ import * as dotEnv from 'dotenv'
 
 dotEnv.config()
 
-const { NODE_ENV } = process.env
+const { NODE_ENV, API_URL } = process.env
 const isProduction = NODE_ENV === 'production'
 
 const hashing = (name: string, extension: string) => {
@@ -87,7 +87,7 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
       ],
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public/index.html'),
+      template: path.resolve(__dirname, 'src/index.html'),
       inject: true,
       minify: true
     }),
@@ -97,7 +97,10 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
   devServer: {
     hot: true,
     historyApiFallback: true,
-    https: true
+    https: true,
+    proxy: {
+      '/api': API_URL || 'http://localhost:3000'
+    }
   },
   optimization: {
     minimize: isProduction,

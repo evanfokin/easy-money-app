@@ -223,3 +223,7 @@ http://ionicframework.com/docs/theming/ */
         --ion-tab-bar-background: #1f1f1f;
     }
 }
+
+ion-backdrop:not(.backdrop-hide) {
+    background: linear-gradient(transparent, black) !important;
+}

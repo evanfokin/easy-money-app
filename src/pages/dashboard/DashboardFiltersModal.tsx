@@ -105,10 +105,9 @@ export class DashboardFiltersModal extends React.Component<Props, State> {
   render () {
     return (
       <IonModal isOpen={this.props.showModal}
-                showBackdrop={false}
                 swipeToClose
                 onDidDismiss={() => this.onClose()}>
-        <IonHeader translucent>
+        <IonHeader>
           <IonToolbar>
             <IonTitle>Фильтры</IonTitle>
             <IonButtons slot="end">
@@ -145,7 +144,7 @@ export class DashboardFiltersModal extends React.Component<Props, State> {
 
               {
                 this.presets.map((preset, index) => (
-                  <IonItem key={index} button detail={false}
+                  <IonItem key={index} button
                            onClick={() => this.setPreset(preset)}>
                     <IonLabel>{preset.name}</IonLabel>
                   </IonItem>

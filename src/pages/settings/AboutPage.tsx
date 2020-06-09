@@ -14,7 +14,7 @@ import {
 import React from 'react'
 import { giftOutline, personCircleOutline } from 'ionicons/icons'
 
-export class About extends React.Component<any, State> {
+export class AboutPage extends React.Component<any, State> {
   static secretVideoCode = 'DLzxrzFCyOs'
 
   constructor (props) {
@@ -27,7 +27,7 @@ export class About extends React.Component<any, State> {
   render () {
     return (
       <IonPage>
-        <IonHeader translucent={true}>
+        <IonHeader>
           <IonToolbar>
             <IonTitle>О разработке</IonTitle>
           </IonToolbar>
@@ -48,7 +48,7 @@ export class About extends React.Component<any, State> {
           {
             this.state.easterEgg ? (
               <div style={{ padding: 15 }}>
-                <iframe src={`https://www.youtube.com/embed/${About.secretVideoCode}?autoplay=1&playsinline=1`}
+                <iframe src={`https://www.youtube.com/embed/${AboutPage.secretVideoCode}?autoplay=1&playsinline=1`}
                         title={'Easter Egg'}
                         width="720" height="288"
                         frameBorder="0"
@@ -66,3 +66,5 @@ export class About extends React.Component<any, State> {
 interface State {
   easterEgg: boolean
 }
+
+export default AboutPage

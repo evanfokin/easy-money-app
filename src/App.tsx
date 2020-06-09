@@ -1,16 +1,18 @@
 import 'react-hot-loader'
-import React, { useState } from 'react'
+import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import {
+  getConfig,
   IonApp,
+  IonContent,
   IonIcon,
   IonLoading,
+  IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  setupConfig,
-  getConfig
+  setupConfig
 } from '@ionic/react'
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -27,17 +29,21 @@ import '@ionic/react/css/flex-utils.css'
 import '@ionic/react/css/display.css'
 /* Theme variables */
 import './theme/variables.css'
+
 import { Redirect, Route } from 'react-router'
 import { albums, home, settings } from 'ionicons/icons'
 import { IonReactRouter } from '@ionic/react-router'
 import { createConnection } from './helpers/connection'
-import Dashboard from './pages/dashboard/Dashboard'
-import SettingsList from './pages/settings/SettingsList'
-import Categories from './pages/settings/Categories'
-import CategoryEdit from './pages/settings/CategoryEdit'
-import TransactionsList from './pages/transactions/TransactionsList'
-import TransactionEdit from './pages/transactions/TransactionEdit'
-import { About } from './pages/settings/About'
+import DashboardPage from './pages/dashboard/DashboardPage'
+import SettingsPage from './pages/settings/SettingsPage'
+import CategoriesPage from './pages/settings/CategoriesPage'
+import CategoryEditPage from './pages/settings/CategoryEditPage'
+import TransactionsPage from './pages/transactions/TransactionsPage'
+import TransactionEditPage from './pages/transactions/TransactionEditPage'
+import AccountLoginPage from './pages/settings/AccountLoginPage'
+import AccountSignUpPage from './pages/settings/AccountSignUpPage'
+import AboutPage from './pages/settings/AboutPage'
+import { sync } from './helpers/api'
 
 if (!getConfig()) {
   setupConfig({
@@ -47,52 +53,74 @@ if (!getConfig()) {
   })
 }
 
-const connectionPromise = createConnection()
+const initPromise = new Promise(async resolve => {
+  await createConnection()
+  await sync(3000).catch(e => console.error(e))
+  resolve()
+})
 
-const App: React.FC = () => {
-  const [showLoading, setShowLoading] = useState(true)
-  connectionPromise.then(() => setShowLoading(false))
+class App extends React.Component<any, State> {
+  constructor (props) {
+    super(props)
+    this.state = {
+      loading: true
+    }
 
-  return (
-    <IonApp>
-      {!showLoading
-        ?
-        <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet animated={true}>
-              <Route path={'/dashboard'} component={Dashboard} exact/>
-              <Route path={`/transactions`} component={TransactionsList} exact/>
-              <Route path={`/transactions/:type/add`} component={TransactionEdit} exact/>
-              <Route path={`/transactions/:type/:id`} component={TransactionEdit} exact/>
-              <Route path={`/settings`} component={SettingsList} exact/>
-              <Route path={`/settings/categories/:type`} component={Categories} exact/>
-              <Route path={`/settings/categories/:type/add`} component={CategoryEdit} exact/>
-              <Route path={`/settings/categories/:type/:id`} component={CategoryEdit} exact/>
-              <Route path={`/settings/about`} component={About} exact/>
-              <Redirect from="/" to="/dashboard" exact={true}/>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="dashboard" href="/dashboard">
-                <IonIcon icon={home} size={'small'}/>
-              </IonTabButton>
-              <IonTabButton tab="transactions" href="/transactions">
-                <IonIcon icon={albums} size={'small'}/>
-              </IonTabButton>
-              <IonTabButton tab="settings" href="/settings">
-                <IonIcon icon={settings} size={'small'}/>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
-        :
-        <IonLoading
-          isOpen={true}
-          showBackdrop={false}
-          message={'Загрузка...'}
-        />
-      }
-    </IonApp>
-  )
+    initPromise.then(() => {
+      this.setState({ loading: false })
+    })
+  }
+
+  render () {
+    return (
+      <IonApp>
+        {this.state.loading
+          ? (
+            <IonPage>
+              <IonContent fullscreen>
+                <IonLoading isOpen/>
+              </IonContent>
+            </IonPage>
+          )
+          : (
+            <IonReactRouter>
+              <IonTabs>
+                <IonRouterOutlet animated={true}>
+                  <Route path={'/dashboard'} component={DashboardPage} exact/>
+                  <Route path={`/transactions`} component={TransactionsPage} exact/>
+                  <Route path={`/transactions/:type/add`} component={TransactionEditPage} exact/>
+                  <Route path={`/transactions/:type/:id`} component={TransactionEditPage} exact/>
+                  <Route path={`/settings`} component={SettingsPage} exact/>
+                  <Route path={`/settings/categories/:type`} component={CategoriesPage} exact/>
+                  <Route path={`/settings/categories/:type/add`} component={CategoryEditPage} exact/>
+                  <Route path={`/settings/categories/:type/:id`} component={CategoryEditPage} exact/>
+                  <Route path={`/settings/account/login`} component={AccountLoginPage} exact/>
+                  <Route path={`/settings/account/sign-up`} component={AccountSignUpPage} exact/>
+                  <Route path={`/settings/about`} component={AboutPage} exact/>
+                  <Redirect from="/" to="/dashboard" exact={true}/>
+                </IonRouterOutlet>
+                <IonTabBar slot="bottom">
+                  <IonTabButton tab="dashboard" href="/dashboard">
+                    <IonIcon icon={home} size={'small'}/>
+                  </IonTabButton>
+                  <IonTabButton tab="transactions" href="/transactions">
+                    <IonIcon icon={albums} size={'small'}/>
+                  </IonTabButton>
+                  <IonTabButton tab="settings" href="/settings">
+                    <IonIcon icon={settings} size={'small'}/>
+                  </IonTabButton>
+                </IonTabBar>
+              </IonTabs>
+            </IonReactRouter>
+          )
+        }
+      </IonApp>
+    )
+  }
+}
+
+interface State {
+  loading: boolean
 }
 
 export default hot(App)

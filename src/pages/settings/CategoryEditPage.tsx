@@ -25,7 +25,7 @@ import { RouteComponentProps } from 'react-router'
 import { getRepository } from 'typeorm'
 import { TransactionType } from '../../helpers/transaction-type'
 
-class CategoryEdit extends React.Component<Props, State> {
+class CategoryEditPage extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
@@ -136,4 +136,4 @@ interface State {
   saveError: boolean
 }
 
-export default withIonLifeCycle(CategoryEdit)
+export default withIonLifeCycle(CategoryEditPage)

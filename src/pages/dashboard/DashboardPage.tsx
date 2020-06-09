@@ -20,7 +20,7 @@ import { DashboardIncomeCard } from './DashboardIncomeCard'
 import { ModalParameters } from './interfaces/modal-parameters'
 import { DashboardFiltersModal } from './DashboardFiltersModal'
 
-class Dashboard extends React.Component<Props, State> {
+class DashboardPage extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
@@ -42,7 +42,7 @@ class Dashboard extends React.Component<Props, State> {
 
   async fetch () {
     this.setState({ loading: true })
-    const transactions = await this.transactionsRepo.find({ relations: ['category'] })
+    const transactions = await this.transactionsRepo.find({ where: { deletedAt: null }, relations: ['category'] })
     this.setState({ transactions })
     this.setState({ loading: false })
   }
@@ -63,7 +63,7 @@ class Dashboard extends React.Component<Props, State> {
   render () {
     return (
       <IonPage>
-        <IonHeader translucent>
+        <IonHeader>
           <IonToolbar>
             <IonTitle>Аналитика</IonTitle>
           </IonToolbar>
@@ -74,7 +74,6 @@ class Dashboard extends React.Component<Props, State> {
               <IonTitle size="large">Аналитика</IonTitle>
             </IonToolbar>
           </IonHeader>
-
           <DashboardFiltersModal filter={this.state.filter}
                                  showModal={this.state.showModal}
                                  onChange={e => this.setFilter(e)}
@@ -106,4 +105,4 @@ interface State extends ModalParameters {
   loading: boolean
 }
 
-export default withIonLifeCycle(Dashboard)
+export default withIonLifeCycle(DashboardPage)

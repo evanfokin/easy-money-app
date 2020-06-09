@@ -6,7 +6,7 @@ import { Icons } from '../helpers/icons'
 @Entity()
 export class Category {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column('varchar')
   name: string
@@ -21,9 +21,6 @@ export class Category {
   @Column('varchar')
   type: TransactionType
 
-  @OneToMany(() => Transaction, transaction => transaction.category)
-  transactions: Transaction[]
-
   @CreateDateColumn()
   createdAt: Date
 
@@ -32,4 +29,7 @@ export class Category {
 
   @Column('datetime', { nullable: true })
   deletedAt: Date
+
+  @OneToMany(() => Transaction, transaction => transaction.category)
+  transactions: Transaction[]
 }

@@ -24,7 +24,7 @@ import { TransactionType } from '../../helpers/transaction-type'
 import { Transaction } from '../../entities/Transaction'
 import { Category } from '../../entities/Category'
 
-class TransactionEdit extends React.Component<Props, State> {
+class TransactionEditPage extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
@@ -164,4 +164,4 @@ interface State {
   saveError: boolean
 }
 
-export default withIonLifeCycle(TransactionEdit)
+export default withIonLifeCycle(TransactionEditPage)

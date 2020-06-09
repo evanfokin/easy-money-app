@@ -1,4 +1,4 @@
-import { getConnection, getRepository } from 'typeorm'
+import { getRepository } from 'typeorm'
 import { Category } from '../entities/Category'
 import { Transaction } from '../entities/Transaction'
 import moment from 'moment'
@@ -7,10 +7,10 @@ import _compact from 'lodash/compact'
 import _random from 'lodash/random'
 
 export function wipe () {
-  const connection = getConnection()
-  return Promise.all(connection.entityMetadatas.map(data => {
-    const repo = getRepository(data.target)
-    return repo.delete({})
+  const deletedAt = new Date()
+  return Promise.all([Category, Transaction].map(Entity => {
+    const repo = getRepository(Entity)
+    return repo.update({ deletedAt: null }, { deletedAt, updatedAt: deletedAt })
   }))
 }
 

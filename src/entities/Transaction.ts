@@ -4,10 +4,10 @@ import { Category } from './Category'
 @Entity()
 export class Transaction {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
-  @Column('integer')
-  categoryId: number
+  @Column('varchar')
+  categoryId: string
 
   @Column('integer')
   amount: number
@@ -18,9 +18,6 @@ export class Transaction {
   @Column('datetime')
   date: Date
 
-  @ManyToOne(() => Category, category => category.transactions)
-  category: Category
-
   @CreateDateColumn()
   createdAt: Date
 
@@ -29,4 +26,7 @@ export class Transaction {
 
   @Column('datetime', { nullable: true })
   deletedAt: Date
+
+  @ManyToOne(() => Category, category => category.transactions)
+  category: Category
 }

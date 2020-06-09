@@ -11,19 +11,26 @@ import {
   IonListHeader,
   IonPage,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  withIonLifeCycle
 } from '@ionic/react'
 import { cardOutline, copyOutline, informationCircleOutline, trashOutline, walletOutline } from 'ionicons/icons'
 import { addSampleData, wipe } from '../../helpers/migration'
 import { AlertAction } from './enums/alert-action'
+import { Account } from './Account'
 
-class SettingsList extends React.Component<any, State> {
+class SettingsPage extends React.Component<any, State> {
   constructor (props) {
     super(props)
     this.state = {
       showAlert: false,
       alertAction: null,
+      accountReady: false
     }
+  }
+
+  get ready () {
+    return this.state.accountReady
   }
 
   showAlert (action: AlertAction) {
@@ -34,10 +41,14 @@ class SettingsList extends React.Component<any, State> {
     this.setState({ showAlert: false, alertAction: null })
   }
 
+  ionViewWillEnter () {
+    this.setState({ accountReady: false })
+  }
+
   render () {
     return (
       <IonPage>
-        <IonHeader translucent={true}>
+        <IonHeader>
           <IonToolbar>
             <IonTitle>Настройки</IonTitle>
           </IonToolbar>
@@ -67,13 +78,13 @@ class SettingsList extends React.Component<any, State> {
             ]}
           />
 
-
           <IonHeader collapse="condense">
             <IonToolbar>
               <IonTitle size="large">Настройки</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonList>
+            <Account ready={this.state.accountReady} onReady={() => this.setState({ accountReady: true })}/>
             <IonItemGroup>
               <IonListHeader>
                 <IonLabel>Категории</IonLabel>
@@ -96,14 +107,14 @@ class SettingsList extends React.Component<any, State> {
               <IonListHeader>
                 <IonLabel>Данные</IonLabel>
               </IonListHeader>
-              <IonItem button detail={false}
+              <IonItem button
                        onClick={() => this.showAlert(AlertAction.Sample)}>
                 <IonIcon slot="start" icon={copyOutline}/>
                 <IonLabel>
                   Заполнить тестовыми данными
                 </IonLabel>
               </IonItem>
-              <IonItem button detail={false}
+              <IonItem button
                        onClick={() => this.showAlert(AlertAction.Clean)}>
                 <IonIcon slot="start" color={'danger'} icon={trashOutline}/>
                 <IonLabel color={'danger'}>
@@ -116,13 +127,13 @@ class SettingsList extends React.Component<any, State> {
               <IonListHeader>
                 <IonLabel>Информация</IonLabel>
               </IonListHeader>
+              <IonItem routerLink={'/settings/about'}>
+                <IonIcon slot="start" icon={informationCircleOutline}/>
+                <IonLabel>
+                  О разработке
+                </IonLabel>
+              </IonItem>
             </IonItemGroup>
-            <IonItem routerLink={'/settings/about'}>
-              <IonIcon slot="start" icon={informationCircleOutline}/>
-              <IonLabel>
-                О разработке
-              </IonLabel>
-            </IonItem>
           </IonList>
         </IonContent>
       </IonPage>
@@ -132,7 +143,8 @@ class SettingsList extends React.Component<any, State> {
 
 interface State {
   showAlert: boolean,
-  alertAction?: AlertAction
+  alertAction?: AlertAction,
+  accountReady: boolean
 }
 
-export default SettingsList
+export default withIonLifeCycle(SettingsPage)
