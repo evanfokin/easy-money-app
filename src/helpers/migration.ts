@@ -20,11 +20,12 @@ export async function addSampleData () {
   const categoryRepository = getRepository(Category)
   const transactionRepository = getRepository(Transaction)
 
-  const months = 4
-  const getRandomTransaction = (times: number, min: number, max: number, round = 1) => {
+  const months = 2
+  const getRandomTransaction = (times: number, min: number, max: number, round = 1, comment = '') => {
     return _compact(_times(times, () => {
       return getRepository(Transaction).create({
         amount: getRandomNum(min, max, round),
+        comment,
         date: getRandomDate(moment().subtract(months, 'month'))
       })
     }))
@@ -79,7 +80,10 @@ export async function addSampleData () {
       name: 'Продукты',
       budget: 8000,
       icon: 'basketOutline',
-      transactions: getRandomTransaction(months * 2, 300, 3000, 10)
+      transactions: [
+        ...getRandomTransaction(_random(10, 15), 100, 500, 10),
+        ...getRandomTransaction(months, 2000, 3000, 10)
+      ]
     }),
     categoryRepository.create({
       type: 'expense',
@@ -94,8 +98,8 @@ export async function addSampleData () {
       budget: 5000,
       icon: 'busOutline',
       transactions: [
-        ...getRandomTransaction(months * _random(10, 15), 25, 25),
-        ...getRandomTransaction(months * _random(1, 3), 110, 230, 10),
+        ...getRandomTransaction(_random(5, 10), 25, 25),
+        ...getRandomTransaction(_random(5, 10), 110, 230, 10, 'Такси'),
       ]
     }),
     categoryRepository.create({
@@ -141,7 +145,7 @@ export async function addSampleData () {
       name: 'Развлечения',
       budget: 3000,
       icon: 'filmOutline',
-      transactions: getRandomTransaction(_random(1, 2), 500, 1500, 100)
+      transactions: getRandomTransaction(_random(1, 3), 500, 1500, 100)
     }),
     categoryRepository.create({
       type: 'expense',
