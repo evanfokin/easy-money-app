@@ -35,8 +35,14 @@ export class DashboardCardBase<P extends BaseProps = BaseProps, S = {}> extends 
   getTransactionSum (transactions: Transaction[]) {
     return _sumBy(transactions, 'amount')
   }
+
+  getBudgetPercentage (category: Category) {
+    if (!category.budget) return 0
+    return this.getCategorySum(category) / (category.budget * this.props.months)
+  }
 }
 
 interface BaseProps {
   transactions: Transaction[],
+  months: number
 }

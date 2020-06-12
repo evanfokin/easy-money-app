@@ -21,6 +21,9 @@ export class Category {
   @Column('varchar')
   type: TransactionType
 
+  @Column('varchar', { nullable: true })
+  budget: number
+
   @CreateDateColumn()
   createdAt: Date
 

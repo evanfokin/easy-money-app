@@ -60,6 +60,14 @@ class DashboardPage extends React.Component<Props, State> {
       })
   }
 
+  get months (): number {
+    const { filter } = this.state
+    const from = moment(filter.from)
+    const to = moment(filter.to).add(1, 'seconds')
+
+    return to.diff(from, 'months', true)
+  }
+
   render () {
     return (
       <IonPage>
@@ -86,8 +94,8 @@ class DashboardPage extends React.Component<Props, State> {
           </IonFab>
 
           <div style={{ marginBottom: 100 }}>
-            <DashboardIncomeCard transactions={this.filteredTransactions}/>
-            <DashboardExpenseCard transactions={this.filteredTransactions}/>
+            <DashboardIncomeCard transactions={this.filteredTransactions} months={this.months}/>
+            <DashboardExpenseCard transactions={this.filteredTransactions} months={this.months}/>
           </div>
 
         </IonContent>

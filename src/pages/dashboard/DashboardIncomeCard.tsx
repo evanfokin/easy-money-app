@@ -9,7 +9,8 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonNote
+  IonNote,
+  IonProgressBar
 } from '@ionic/react'
 import React from 'react'
 import { formatNumber } from '../../helpers/format-number'
@@ -37,9 +38,12 @@ export class DashboardIncomeCard extends DashboardCardBase {
           <IonList>
             {
               this.getTopCategories('income').map(c => (
-                <IonItem key={c.id}>
+                <IonItem key={c.id} lines={'none'}>
                   <IonIcon slot={'start'} icon={c.ionIcon}/>
-                  <IonLabel>{c.name}</IonLabel>
+                  <IonLabel>
+                    <div style={{ marginBottom: 5 }}>{c.name}</div>
+                    <IonProgressBar color="primary" value={this.getBudgetPercentage(c)}/>
+                  </IonLabel>
                   <IonNote slot={'end'}>{
                     formatNumber(this.getCategorySum(c))
                   }</IonNote>

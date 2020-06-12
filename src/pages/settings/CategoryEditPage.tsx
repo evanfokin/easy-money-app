@@ -108,6 +108,13 @@ class CategoryEditPage extends React.Component<Props, State> {
                         onIonChange={e => this.setForm({ name: e.detail.value! })}/>
             </IonItem>
             <IonItem>
+              <IonLabel position="stacked">Бюджет</IonLabel>
+              <IonInput value={this.state.form.budget}
+                        type={'tel'}
+                        placeholder={`Планирую ${this.type === 'income' ? 'получать' : 'тратить'}`}
+                        onIonChange={e => this.setForm({ name: e.detail.value! })}/>
+            </IonItem>
+            <IonItem>
               <IonLabel position="stacked" style={{ marginBottom: 20 }}>Иконка</IonLabel>
               <IonRow>
                 {Object.keys(Icons.outline).map(key => (
