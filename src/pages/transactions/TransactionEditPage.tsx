@@ -69,7 +69,7 @@ class TransactionEditPage extends React.Component<Props, State> {
       this.setState({ loading: false })
     }
 
-    this.setState({ categories: await this.categoriesRepo.find({ type: this.type }) })
+    this.setState({ categories: await this.categoriesRepo.find({ type: this.type, deletedAt: null }) })
   }
 
   async save() {
