@@ -1,8 +1,0 @@
-{
-  "name": "app-ionic",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react",
-  "id": "c31da41d"
-}
