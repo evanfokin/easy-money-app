@@ -42,7 +42,7 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
         ]
       },
       {
-        test: /\.(j|t)sx?$/,
+        test: /\.([jt])sx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -72,7 +72,7 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
     new webpack.NormalModuleReplacementPlugin(/typeorm$/, result => {
       result.request = result.request.replace(/typeorm/, 'typeorm/browser')
     }),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /ru/),
     new webpack.ProvidePlugin({
       'window.SQL': 'sql.js/dist/sql-wasm.js'
     }),
