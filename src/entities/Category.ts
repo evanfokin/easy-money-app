@@ -14,7 +14,7 @@ export class Category {
   @Column('varchar')
   icon: string
 
-  get ionIcon () {
+  get ionIcon() {
     return Icons.outline[this.icon]
   }
 

@@ -1,6 +1,6 @@
 import { Filter } from './filter'
 
 export interface ModalParameters {
-  filter: Filter,
+  filter: Filter
   showModal: boolean
 }

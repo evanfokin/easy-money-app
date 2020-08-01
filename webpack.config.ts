@@ -24,22 +24,19 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: hashing('[name]', 'js'),
+    filename: hashing('[name]', 'js')
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      'react-dom': '@hot-loader/react-dom',
-    },
+      'react-dom': '@hot-loader/react-dom'
+    }
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        loaders: [
-          'style-loader',
-          'css-loader'
-        ]
+        loaders: ['style-loader', 'css-loader']
       },
       {
         test: /\.([jt])sx?$/,
@@ -49,15 +46,12 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
           options: {
             cacheDirectory: true,
             presets: [
-              [
-                '@babel/preset-env',
-                { targets: { browsers: 'last 2 versions' } }
-              ],
+              ['@babel/preset-env', { targets: { browsers: 'last 2 versions' } }],
               '@babel/preset-typescript',
               '@babel/preset-react'
             ],
             plugins: [
-              ['@babel/plugin-transform-runtime', { 'regenerator': true }],
+              ['@babel/plugin-transform-runtime', { regenerator: true }],
               ['@babel/plugin-proposal-decorators', { legacy: true }],
               ['@babel/plugin-proposal-class-properties', { loose: true }],
               'babel-plugin-transform-typescript-metadata',
@@ -84,7 +78,7 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
       patterns: [
         { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: '' },
         { from: path.resolve(__dirname, 'public'), to: '' }
-      ],
+      ]
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/index.html'),
@@ -119,7 +113,7 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
       name: true,
       cacheGroups: {
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/]/
         }
       }
     }
@@ -135,9 +129,9 @@ if (isProduction) {
       publicPath: '/',
       appShell: '/',
       safeToUseOptionalCaches: true,
-      ServiceWorker: { events: true, navigateFallbackURL: '/', },
+      ServiceWorker: { events: true, navigateFallbackURL: '/' },
       AppCache: { events: true, FALLBACK: { '/': '/index.html' } }
-    }),
+    })
   )
 }
 

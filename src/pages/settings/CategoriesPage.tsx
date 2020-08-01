@@ -26,7 +26,7 @@ import { trashOutline } from 'ionicons/icons'
 import { Transaction } from '../../entities/Transaction'
 
 export class CategoriesPage extends React.Component<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       categories: [],
@@ -37,65 +37,57 @@ export class CategoriesPage extends React.Component<Props, State> {
   categoriesRepo = getRepository(Category)
   transactionsRepo = getRepository(Transaction)
 
-  get type () {
+  get type() {
     return this.props.match.params.type
   }
 
-  ionViewWillEnter () {
+  ionViewWillEnter() {
     return this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     this.setState({ loading: true })
     this.setState({ categories: await this.categoriesRepo.find({ type: this.type, deletedAt: null }) })
     this.setState({ loading: false })
   }
 
-  async remove (id: string) {
+  async remove(id: string) {
     const deletedAt = new Date()
     await this.transactionsRepo.update({ categoryId: id }, { deletedAt, updatedAt: deletedAt })
     await this.categoriesRepo.update(id, { deletedAt, updatedAt: deletedAt })
     await this.fetch()
   }
 
-  render () {
+  render() {
     return (
       <IonPage>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref={'/settings'}/>
+              <IonBackButton defaultHref={'/settings'} />
             </IonButtons>
             <IonTitle>Список категорий</IonTitle>
             <IonButtons slot="end">
-              <IonButton routerLink={`/settings/categories/${this.type}/add`}>
-                Добавить
-              </IonButton>
+              <IonButton routerLink={`/settings/categories/${this.type}/add`}>Добавить</IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <IonLoading
-            isOpen={this.state.loading}
-            message={'Загрузка...'}
-          />
+          <IonLoading isOpen={this.state.loading} message={'Загрузка...'} />
           <IonList>
-            {
-              this.state.categories.map(category => (
-                <IonItemSliding key={category.id}>
-                  <IonItemOptions side="start">
-                    <IonItemOption color="danger"
-                                   onClick={() => this.remove(category.id)}>
-                      <IonIcon slot="icon-only" icon={trashOutline} size={'small'}/>
-                    </IonItemOption>
-                  </IonItemOptions>
-                  <IonItem routerLink={`/settings/categories/${this.type}/${category.id}`}>
-                    <IonIcon icon={category.ionIcon} slot="start"/>
-                    <IonLabel>{category.name}</IonLabel>
-                  </IonItem>
-                </IonItemSliding>
-              ))
-            }
+            {this.state.categories.map(category => (
+              <IonItemSliding key={category.id}>
+                <IonItemOptions side="start">
+                  <IonItemOption color="danger" onClick={() => this.remove(category.id)}>
+                    <IonIcon slot="icon-only" icon={trashOutline} size={'small'} />
+                  </IonItemOption>
+                </IonItemOptions>
+                <IonItem routerLink={`/settings/categories/${this.type}/${category.id}`}>
+                  <IonIcon icon={category.ionIcon} slot="start" />
+                  <IonLabel>{category.name}</IonLabel>
+                </IonItem>
+              </IonItemSliding>
+            ))}
           </IonList>
         </IonContent>
       </IonPage>
@@ -103,12 +95,10 @@ export class CategoriesPage extends React.Component<Props, State> {
   }
 }
 
-interface Props extends RouteComponentProps<{ type: TransactionType }> {
-
-}
+interface Props extends RouteComponentProps<{ type: TransactionType }> {}
 
 interface State {
-  categories: Category[],
+  categories: Category[]
   loading: boolean
 }
 

@@ -9,7 +9,7 @@ import * as OfflinePluginRuntime from 'offline-plugin/runtime'
 moment.locale('ru')
 OfflinePluginRuntime.install({
   onUpdateReady: () => OfflinePluginRuntime.applyUpdate(),
-  onUpdated: () => window.location.reload(),
+  onUpdated: () => window.location.reload()
 })
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))

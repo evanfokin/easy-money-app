@@ -21,7 +21,7 @@ import { login } from '../../helpers/api'
 import { RouteComponentProps } from 'react-router'
 
 export class AccountLoginPage extends React.Component<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       email: '',
@@ -30,18 +30,18 @@ export class AccountLoginPage extends React.Component<Props, State> {
     }
   }
 
-  ionViewWillEnter () {
+  ionViewWillEnter() {
     this.resetForm()
   }
 
-  resetForm () {
+  resetForm() {
     this.setState({
       email: '',
-      password: '',
+      password: ''
     })
   }
 
-  async submit () {
+  async submit() {
     try {
       await login(this.state.email, this.state.password)
       this.props.history.push('/settings')
@@ -51,19 +51,18 @@ export class AccountLoginPage extends React.Component<Props, State> {
     }
   }
 
-  render () {
+  render() {
     return (
       <IonPage>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref={'/settings'}/>
+              <IonBackButton defaultHref={'/settings'} />
             </IonButtons>
             <IonTitle>Авторизация</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen={true}>
-
           <IonToast
             isOpen={this.state.showToast}
             onDidDismiss={() => this.setState({ showToast: false })}
@@ -75,21 +74,24 @@ export class AccountLoginPage extends React.Component<Props, State> {
           <IonList>
             <IonItemGroup>
               <IonItem>
-                <IonIcon slot="start" icon={mailOutline} size={'small'}/>
-                <IonInput value={this.state.email}
-                          placeholder={'Email'}
-                          type={'email'}
-                          onIonChange={e => this.setState({ email: e.detail.value! })}/>
+                <IonIcon slot="start" icon={mailOutline} size={'small'} />
+                <IonInput
+                  value={this.state.email}
+                  placeholder={'Email'}
+                  type={'email'}
+                  onIonChange={e => this.setState({ email: e.detail.value! })}
+                />
               </IonItem>
               <IonItem>
-                <IonIcon slot="start" icon={lockClosedOutline} size={'small'}/>
-                <IonInput value={this.state.password}
-                          placeholder={'Пароль'}
-                          type={'password'}
-                          onIonChange={e => this.setState({ password: e.detail.value! })}/>
+                <IonIcon slot="start" icon={lockClosedOutline} size={'small'} />
+                <IonInput
+                  value={this.state.password}
+                  placeholder={'Пароль'}
+                  type={'password'}
+                  onIonChange={e => this.setState({ password: e.detail.value! })}
+                />
               </IonItem>
-              <IonButton expand={'block'} onClick={() => this.submit()}
-                         style={{ margin: 15 }}>
+              <IonButton expand={'block'} onClick={() => this.submit()} style={{ margin: 15 }}>
                 Войти
               </IonButton>
             </IonItemGroup>
@@ -100,13 +102,11 @@ export class AccountLoginPage extends React.Component<Props, State> {
   }
 }
 
-interface Props extends RouteComponentProps<{}> {
-
-}
+interface Props extends RouteComponentProps<{}> {}
 
 interface State {
-  email: string,
-  password: string,
+  email: string
+  password: string
   showToast: boolean
 }
 

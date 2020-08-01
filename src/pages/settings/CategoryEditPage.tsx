@@ -26,7 +26,7 @@ import { getRepository } from 'typeorm'
 import { TransactionType } from '../../helpers/transaction-type'
 
 class CategoryEditPage extends React.Component<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       form: new Category(),
@@ -37,23 +37,23 @@ class CategoryEditPage extends React.Component<Props, State> {
 
   repo = getRepository(Category)
 
-  get id () {
+  get id() {
     return this.props.match.params.id
   }
 
-  get type () {
+  get type() {
     return this.props.match.params.type
   }
 
-  get isNew () {
+  get isNew() {
     return !this.id
   }
 
-  setForm (value: Partial<Category>) {
+  setForm(value: Partial<Category>) {
     return this.setState({ form: { ...this.state.form, ...value } })
   }
 
-  async ionViewWillEnter () {
+  async ionViewWillEnter() {
     this.setForm(new Category())
 
     if (!this.isNew) {
@@ -63,37 +63,31 @@ class CategoryEditPage extends React.Component<Props, State> {
     }
   }
 
-  async save () {
-    const result = await this.repo.save({ ...this.state.form, type: this.type })
+  async save() {
+    const result = await this.repo
+      .save({ ...this.state.form, type: this.type })
       .catch(() => this.setState({ saveError: true }))
     if (!result) return
 
     this.props.history.replace(`/settings/categories/${this.type}`)
   }
 
-  render () {
+  render() {
     return (
       <IonPage>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref={`/settings/categories/${this.type}`}/>
+              <IonBackButton defaultHref={`/settings/categories/${this.type}`} />
             </IonButtons>
-            <IonTitle>
-              {this.isNew ? 'Создание' : 'Изменение'}
-            </IonTitle>
+            <IonTitle>{this.isNew ? 'Создание' : 'Изменение'}</IonTitle>
             <IonButtons slot="end">
-              <IonButton onClick={() => this.save()}>
-                Сохранить
-              </IonButton>
+              <IonButton onClick={() => this.save()}>Сохранить</IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <IonLoading
-            isOpen={this.state.loading}
-            message={'Загрузка...'}
-          />
+          <IonLoading isOpen={this.state.loading} message={'Загрузка...'} />
           <IonAlert
             isOpen={this.state.saveError}
             onDidDismiss={() => this.setState({ saveError: false })}
@@ -104,24 +98,29 @@ class CategoryEditPage extends React.Component<Props, State> {
           <IonList>
             <IonItem>
               <IonLabel position="stacked">Название</IonLabel>
-              <IonInput value={this.state.form.name}
-                        onIonChange={e => this.setForm({ name: e.detail.value! })}/>
+              <IonInput value={this.state.form.name} onIonChange={e => this.setForm({ name: e.detail.value! })} />
             </IonItem>
             <IonItem>
               <IonLabel position="stacked">Бюджет</IonLabel>
-              <IonInput value={this.state.form.budget}
-                        type={'tel'}
-                        placeholder={`Планирую ${this.type === 'income' ? 'получать' : 'тратить'}`}
-                        onIonChange={e => this.setForm({ name: e.detail.value! })}/>
+              <IonInput
+                value={this.state.form.budget}
+                type={'tel'}
+                placeholder={`Планирую ${this.type === 'income' ? 'получать' : 'тратить'}`}
+                onIonChange={e => this.setForm({ name: e.detail.value! })}
+              />
             </IonItem>
             <IonItem>
-              <IonLabel position="stacked" style={{ marginBottom: 20 }}>Иконка</IonLabel>
+              <IonLabel position="stacked" style={{ marginBottom: 20 }}>
+                Иконка
+              </IonLabel>
               <IonRow>
                 {Object.keys(Icons.outline).map(key => (
-                  <IonCol style={{ opacity: this.state.form.icon === key ? 1 : 0.4 }}
-                          onClick={() => this.setForm({ icon: key })}
-                          key={key}>
-                    <IonIcon icon={Icons.outline[key]} style={{ fontSize: 40 }}/>
+                  <IonCol
+                    style={{ opacity: this.state.form.icon === key ? 1 : 0.4 }}
+                    onClick={() => this.setForm({ icon: key })}
+                    key={key}
+                  >
+                    <IonIcon icon={Icons.outline[key]} style={{ fontSize: 40 }} />
                   </IonCol>
                 ))}
               </IonRow>
@@ -133,13 +132,11 @@ class CategoryEditPage extends React.Component<Props, State> {
   }
 }
 
-interface Props extends RouteComponentProps<{ id: string, type: TransactionType }> {
-
-}
+interface Props extends RouteComponentProps<{ id: string; type: TransactionType }> {}
 
 interface State {
-  form: Partial<Category>,
-  loading: boolean,
+  form: Partial<Category>
+  loading: boolean
   saveError: boolean
 }
 

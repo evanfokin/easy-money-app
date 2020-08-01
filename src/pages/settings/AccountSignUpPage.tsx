@@ -22,7 +22,7 @@ import { helpCircleOutline, lockClosedOutline, mailOutline, personOutline } from
 import { signUp } from '../../helpers/api'
 
 export class AccountSignUpPage extends React.Component<any, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       name: '',
@@ -36,11 +36,11 @@ export class AccountSignUpPage extends React.Component<any, State> {
     }
   }
 
-  ionViewWillEnter () {
+  ionViewWillEnter() {
     this.resetForm()
   }
 
-  resetForm () {
+  resetForm() {
     this.setState({
       name: '',
       email: '',
@@ -48,7 +48,7 @@ export class AccountSignUpPage extends React.Component<any, State> {
     })
   }
 
-  async submit () {
+  async submit() {
     try {
       await signUp(this.state)
       this.props.history.push('/settings')
@@ -58,19 +58,18 @@ export class AccountSignUpPage extends React.Component<any, State> {
     }
   }
 
-  render () {
+  render() {
     return (
       <IonPage>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref={'/settings'}/>
+              <IonBackButton defaultHref={'/settings'} />
             </IonButtons>
             <IonTitle>Регистрация</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen={true}>
-
           <IonToast
             isOpen={this.state.showToast}
             onDidDismiss={() => this.setState({ showToast: false })}
@@ -82,42 +81,50 @@ export class AccountSignUpPage extends React.Component<any, State> {
           <IonList>
             <IonItemGroup>
               <IonItem>
-                <IonIcon slot="start" icon={personOutline} size={'small'}/>
-                <IonInput value={this.state.name}
-                          placeholder={'Имя'}
-                          onIonChange={e => this.setState({ name: e.detail.value! })}/>
+                <IonIcon slot="start" icon={personOutline} size={'small'} />
+                <IonInput
+                  value={this.state.name}
+                  placeholder={'Имя'}
+                  onIonChange={e => this.setState({ name: e.detail.value! })}
+                />
               </IonItem>
               <IonItem>
-                <IonIcon slot="start" icon={mailOutline} size={'small'}/>
-                <IonInput value={this.state.email}
-                          type={'email'}
-                          placeholder={'Email'}
-                          onIonChange={e => this.setState({ email: e.detail.value! })}/>
+                <IonIcon slot="start" icon={mailOutline} size={'small'} />
+                <IonInput
+                  value={this.state.email}
+                  type={'email'}
+                  placeholder={'Email'}
+                  onIonChange={e => this.setState({ email: e.detail.value! })}
+                />
               </IonItem>
               <IonItem>
-                <IonIcon slot="start" icon={lockClosedOutline} size={'small'}/>
-                <IonInput value={this.state.password}
-                          type={'password'}
-                          placeholder={'Пароль'}
-                          onIonChange={e => this.setState({ password: e.detail.value! })}/>
-                <IonIcon slot={'end'} icon={helpCircleOutline} size={'small'}
-                         onClick={e => this.setState({ passwordPopover: { show: true, event: e.nativeEvent } })}/>
-                <IonPopover translucent
-                            isOpen={this.state.passwordPopover.show}
-                            event={this.state.passwordPopover.event}
-                            onDidDismiss={() => this.setState({ passwordPopover: { show: false, event: undefined } })}>
+                <IonIcon slot="start" icon={lockClosedOutline} size={'small'} />
+                <IonInput
+                  value={this.state.password}
+                  type={'password'}
+                  placeholder={'Пароль'}
+                  onIonChange={e => this.setState({ password: e.detail.value! })}
+                />
+                <IonIcon
+                  slot={'end'}
+                  icon={helpCircleOutline}
+                  size={'small'}
+                  onClick={e => this.setState({ passwordPopover: { show: true, event: e.nativeEvent } })}
+                />
+                <IonPopover
+                  translucent
+                  isOpen={this.state.passwordPopover.show}
+                  event={this.state.passwordPopover.event}
+                  onDidDismiss={() => this.setState({ passwordPopover: { show: false, event: undefined } })}
+                >
                   <IonList>
                     <IonItem>
-                      <IonLabel>
-                        от 5 символов
-                      </IonLabel>
+                      <IonLabel>от 5 символов</IonLabel>
                     </IonItem>
                   </IonList>
                 </IonPopover>
-
               </IonItem>
-              <IonButton expand={'block'} onClick={() => this.submit()}
-                         style={{ margin: 15 }}>
+              <IonButton expand={'block'} onClick={() => this.submit()} style={{ margin: 15 }}>
                 Зарегистрироваться
               </IonButton>
             </IonItemGroup>
@@ -130,11 +137,11 @@ export class AccountSignUpPage extends React.Component<any, State> {
 
 interface State {
   name: string
-  email: string,
-  password: string,
-  showToast: boolean,
+  email: string
+  password: string
+  showToast: boolean
   passwordPopover: {
-    show: boolean,
+    show: boolean
     event?: any
   }
 }

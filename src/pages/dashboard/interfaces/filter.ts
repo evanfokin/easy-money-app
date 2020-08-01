@@ -1,4 +1,4 @@
 export interface Filter {
-  from: Date,
+  from: Date
   to: Date
 }

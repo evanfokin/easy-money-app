@@ -20,7 +20,7 @@ import { AlertAction } from './enums/alert-action'
 import { Account } from './Account'
 
 class SettingsPage extends React.Component<any, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       showAlert: false,
@@ -29,23 +29,23 @@ class SettingsPage extends React.Component<any, State> {
     }
   }
 
-  get ready () {
+  get ready() {
     return this.state.accountReady
   }
 
-  showAlert (action: AlertAction) {
+  showAlert(action: AlertAction) {
     this.setState({ showAlert: true, alertAction: action })
   }
 
-  hideAlert () {
+  hideAlert() {
     this.setState({ showAlert: false, alertAction: null })
   }
 
-  ionViewWillEnter () {
+  ionViewWillEnter() {
     this.setState({ accountReady: false })
   }
 
-  render () {
+  render() {
     return (
       <IonPage>
         <IonHeader>
@@ -71,9 +71,7 @@ class SettingsPage extends React.Component<any, State> {
               },
               {
                 text: 'Да',
-                handler: () => this.state.alertAction === AlertAction.Clean
-                  ? wipe()
-                  : addSampleData()
+                handler: () => (this.state.alertAction === AlertAction.Clean ? wipe() : addSampleData())
               }
             ]}
           />
@@ -84,22 +82,18 @@ class SettingsPage extends React.Component<any, State> {
             </IonToolbar>
           </IonHeader>
           <IonList>
-            <Account ready={this.state.accountReady} onReady={() => this.setState({ accountReady: true })}/>
+            <Account ready={this.state.accountReady} onReady={() => this.setState({ accountReady: true })} />
             <IonItemGroup>
               <IonListHeader>
                 <IonLabel>Категории</IonLabel>
               </IonListHeader>
               <IonItem routerLink="/settings/categories/income">
-                <IonIcon slot="start" icon={walletOutline}/>
-                <IonLabel>
-                  Доходы
-                </IonLabel>
+                <IonIcon slot="start" icon={walletOutline} />
+                <IonLabel>Доходы</IonLabel>
               </IonItem>
               <IonItem routerLink="/settings/categories/expense">
-                <IonIcon slot="start" icon={cardOutline}/>
-                <IonLabel>
-                  Расходы
-                </IonLabel>
+                <IonIcon slot="start" icon={cardOutline} />
+                <IonLabel>Расходы</IonLabel>
               </IonItem>
             </IonItemGroup>
 
@@ -107,19 +101,13 @@ class SettingsPage extends React.Component<any, State> {
               <IonListHeader>
                 <IonLabel>Данные</IonLabel>
               </IonListHeader>
-              <IonItem button
-                       onClick={() => this.showAlert(AlertAction.Sample)}>
-                <IonIcon slot="start" icon={copyOutline}/>
-                <IonLabel>
-                  Заполнить тестовыми данными
-                </IonLabel>
+              <IonItem button onClick={() => this.showAlert(AlertAction.Sample)}>
+                <IonIcon slot="start" icon={copyOutline} />
+                <IonLabel>Заполнить тестовыми данными</IonLabel>
               </IonItem>
-              <IonItem button
-                       onClick={() => this.showAlert(AlertAction.Clean)}>
-                <IonIcon slot="start" color={'danger'} icon={trashOutline}/>
-                <IonLabel color={'danger'}>
-                  Удалить все данные
-                </IonLabel>
+              <IonItem button onClick={() => this.showAlert(AlertAction.Clean)}>
+                <IonIcon slot="start" color={'danger'} icon={trashOutline} />
+                <IonLabel color={'danger'}>Удалить все данные</IonLabel>
               </IonItem>
             </IonItemGroup>
 
@@ -128,10 +116,8 @@ class SettingsPage extends React.Component<any, State> {
                 <IonLabel>Информация</IonLabel>
               </IonListHeader>
               <IonItem routerLink={'/settings/about'}>
-                <IonIcon slot="start" icon={informationCircleOutline}/>
-                <IonLabel>
-                  О разработке
-                </IonLabel>
+                <IonIcon slot="start" icon={informationCircleOutline} />
+                <IonLabel>О разработке</IonLabel>
               </IonItem>
             </IonItemGroup>
           </IonList>
@@ -142,8 +128,8 @@ class SettingsPage extends React.Component<any, State> {
 }
 
 interface State {
-  showAlert: boolean,
-  alertAction?: AlertAction,
+  showAlert: boolean
+  alertAction?: AlertAction
   accountReady: boolean
 }
 

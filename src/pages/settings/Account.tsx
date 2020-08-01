@@ -14,7 +14,7 @@ import { api, isLoggedIn, removeAuthToken, sync } from '../../helpers/api'
 import delay from 'delay'
 
 export class Account extends React.Component<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       loading: false,
@@ -24,11 +24,11 @@ export class Account extends React.Component<Props, State> {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await this.check()
   }
 
-  getSnapshotBeforeUpdate (prevProps: Props) {
+  getSnapshotBeforeUpdate(prevProps: Props) {
     if (!this.state.loading && prevProps.ready && !this.props.ready) {
       this.check().then()
     }
@@ -36,7 +36,7 @@ export class Account extends React.Component<Props, State> {
     return null
   }
 
-  async check () {
+  async check() {
     this.setState({ loading: true })
 
     const status = await isLoggedIn()
@@ -50,12 +50,12 @@ export class Account extends React.Component<Props, State> {
     this.setState({ loading: false, isLoggedIn: status, user })
   }
 
-  async logOut () {
+  async logOut() {
     removeAuthToken()
     await this.check()
   }
 
-  async sync () {
+  async sync() {
     if (this.state.synchronization) return
 
     this.setState({ synchronization: true })
@@ -64,89 +64,71 @@ export class Account extends React.Component<Props, State> {
     this.setState({ synchronization: false })
   }
 
-  render () {
+  render() {
     return (
       <IonItemGroup>
         <IonListHeader>
           <IonLabel>Аккаунт</IonLabel>
         </IonListHeader>
-        {
-          !this.state.isLoggedIn
-            ? (
-              <>
-                <IonItem routerLink={'/settings/account/login'}>
-                  <IonIcon slot="start" icon={fingerPrintOutline}/>
-                  <IonLabel>
-                    Войти
-                  </IonLabel>
-                </IonItem>
-                <IonItem routerLink={'/settings/account/sign-up'}>
-                  <IonIcon slot="start" icon={personOutline}/>
-                  <IonLabel>
-                    Регистрация
-                  </IonLabel>
-                </IonItem>
-              </>
-            )
-            : (
-              <>
-                {
-                  this.state.user
-                    ? (
-                      <IonItem detail={false}>
-                        <IonIcon slot="start" icon={personCircleOutline}/>
-                        <IonLabel>
-                          {this.state.user.name}
-                        </IonLabel>
-                        <IonNote slot={'end'}>
-                          {this.state.user.email}
-                        </IonNote>
-                      </IonItem>
-                    )
-                    : null
-                }
-                <IonItem button={!this.state.synchronization}
-                         detail={!this.state.synchronization}
-                         onClick={() => this.sync()}>
-                  {
-                    !this.state.synchronization
-                      ? (
-                        <>
-                          <IonIcon slot="start" icon={cloudOutline}/>
-                          <IonLabel>Синхронизировать</IonLabel>
-                        </>
-                      )
-                      : (
-                        <>
-                          <IonSpinner slot="start" name="crescent"/>
-                          <IonNote>Синхронизация...</IonNote>
-                        </>
-                      )
-                  }
-
-                </IonItem>
-                <IonItem button onClick={() => this.logOut()}>
-                  <IonIcon slot="start" icon={logOutOutline}/>
-                  <IonLabel>Выйти</IonLabel>
-                </IonItem>
-              </>
-            )}
+        {!this.state.isLoggedIn ? (
+          <>
+            <IonItem routerLink={'/settings/account/login'}>
+              <IonIcon slot="start" icon={fingerPrintOutline} />
+              <IonLabel>Войти</IonLabel>
+            </IonItem>
+            <IonItem routerLink={'/settings/account/sign-up'}>
+              <IonIcon slot="start" icon={personOutline} />
+              <IonLabel>Регистрация</IonLabel>
+            </IonItem>
+          </>
+        ) : (
+          <>
+            {this.state.user ? (
+              <IonItem detail={false}>
+                <IonIcon slot="start" icon={personCircleOutline} />
+                <IonLabel>{this.state.user.name}</IonLabel>
+                <IonNote slot={'end'}>{this.state.user.email}</IonNote>
+              </IonItem>
+            ) : null}
+            <IonItem
+              button={!this.state.synchronization}
+              detail={!this.state.synchronization}
+              onClick={() => this.sync()}
+            >
+              {!this.state.synchronization ? (
+                <>
+                  <IonIcon slot="start" icon={cloudOutline} />
+                  <IonLabel>Синхронизировать</IonLabel>
+                </>
+              ) : (
+                <>
+                  <IonSpinner slot="start" name="crescent" />
+                  <IonNote>Синхронизация...</IonNote>
+                </>
+              )}
+            </IonItem>
+            <IonItem button onClick={() => this.logOut()}>
+              <IonIcon slot="start" icon={logOutOutline} />
+              <IonLabel>Выйти</IonLabel>
+            </IonItem>
+          </>
+        )}
       </IonItemGroup>
     )
   }
 }
 
 interface Props {
-  ready: boolean,
+  ready: boolean
   onReady?: Function
 }
 
 interface State {
   loading: boolean
-  isLoggedIn: boolean,
-  synchronization: boolean,
+  isLoggedIn: boolean
+  synchronization: boolean
   user?: {
-    name: string,
+    name: string
     email: string
   }
 }

@@ -8,7 +8,7 @@ import React from 'react'
 import { TransactionType } from '../../helpers/transaction-type'
 
 export class DashboardCardBase<P extends BaseProps = BaseProps, S = {}> extends React.Component<P, S> {
-  get categories () {
+  get categories() {
     const uniq = _uniqBy(this.props.transactions, 'categoryId')
     return uniq.map(t => {
       const category = Object.assign(new Category(), t.category)
@@ -17,32 +17,31 @@ export class DashboardCardBase<P extends BaseProps = BaseProps, S = {}> extends 
     })
   }
 
-  getTopCategories (type?: TransactionType) {
-    const categories = [...this.categories]
-      .filter(category => !type || category.type === type)
+  getTopCategories(type?: TransactionType) {
+    const categories = [...this.categories].filter(category => !type || category.type === type)
 
     return _orderBy(categories, [c => this.getCategorySum(c)], ['desc'])
   }
 
-  getCategoriesSum (categories: Category[]) {
+  getCategoriesSum(categories: Category[]) {
     return _sum(categories.map(c => this.getCategorySum(c)))
   }
 
-  getCategorySum (category: Category) {
+  getCategorySum(category: Category) {
     return this.getTransactionSum(category.transactions)
   }
 
-  getTransactionSum (transactions: Transaction[]) {
+  getTransactionSum(transactions: Transaction[]) {
     return _sumBy(transactions, 'amount')
   }
 
-  getBudgetPercentage (category: Category) {
+  getBudgetPercentage(category: Category) {
     if (!category.budget) return 0
     return this.getCategorySum(category) / (category.budget * this.props.months)
   }
 }
 
 interface BaseProps {
-  transactions: Transaction[],
+  transactions: Transaction[]
   months: number
 }

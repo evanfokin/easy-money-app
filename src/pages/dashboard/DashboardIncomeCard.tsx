@@ -16,40 +16,32 @@ import React from 'react'
 import { formatNumber } from '../../helpers/format-number'
 
 export class DashboardIncomeCard extends DashboardCardBase {
-  get total () {
-    return this.getCategoriesSum(
-      this.getTopCategories('income')
-    )
+  get total() {
+    return this.getCategoriesSum(this.getTopCategories('income'))
   }
 
-  render () {
+  render() {
     return (
       <IonCard>
         <IonCardHeader>
           <IonCardSubtitle>Вы заработали</IonCardSubtitle>
           <IonCardTitle>
-            <IonLabel>{
-              formatNumber(this.total)
-            }</IonLabel>
+            <IonLabel>{formatNumber(this.total)}</IonLabel>
           </IonCardTitle>
         </IonCardHeader>
 
         <IonCardContent>
           <IonList>
-            {
-              this.getTopCategories('income').map(c => (
-                <IonItem key={c.id} lines={'none'}>
-                  <IonIcon slot={'start'} icon={c.ionIcon}/>
-                  <IonLabel>
-                    <div style={{ marginBottom: 5 }}>{c.name}</div>
-                    <IonProgressBar color="primary" value={this.getBudgetPercentage(c)}/>
-                  </IonLabel>
-                  <IonNote slot={'end'}>{
-                    formatNumber(this.getCategorySum(c))
-                  }</IonNote>
-                </IonItem>
-              ))
-            }
+            {this.getTopCategories('income').map(c => (
+              <IonItem key={c.id} lines={'none'}>
+                <IonIcon slot={'start'} icon={c.ionIcon} />
+                <IonLabel>
+                  <div style={{ marginBottom: 5 }}>{c.name}</div>
+                  <IonProgressBar color="primary" value={this.getBudgetPercentage(c)} />
+                </IonLabel>
+                <IonNote slot={'end'}>{formatNumber(this.getCategorySum(c))}</IonNote>
+              </IonItem>
+            ))}
           </IonList>
         </IonCardContent>
       </IonCard>

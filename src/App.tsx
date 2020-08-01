@@ -49,7 +49,7 @@ if (!getConfig()) {
   setupConfig({
     swipeBackEnabled: false,
     backButtonText: 'Назад',
-    mode: 'ios',
+    mode: 'ios'
   })
 }
 
@@ -60,7 +60,7 @@ const initPromise = new Promise(async resolve => {
 })
 
 class App extends React.Component<any, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       loading: true
@@ -71,49 +71,46 @@ class App extends React.Component<any, State> {
     })
   }
 
-  render () {
+  render() {
     return (
       <IonApp>
-        {this.state.loading
-          ? (
-            <IonPage>
-              <IonContent fullscreen>
-                <IonLoading isOpen/>
-              </IonContent>
-            </IonPage>
-          )
-          : (
-            <IonReactRouter>
-              <IonTabs>
-                <IonRouterOutlet animated={true}>
-                  <Route path={'/dashboard'} component={DashboardPage} exact/>
-                  <Route path={`/transactions`} component={TransactionsPage} exact/>
-                  <Route path={`/transactions/:type/add`} component={TransactionEditPage} exact/>
-                  <Route path={`/transactions/:type/:id`} component={TransactionEditPage} exact/>
-                  <Route path={`/settings`} component={SettingsPage} exact/>
-                  <Route path={`/settings/categories/:type`} component={CategoriesPage} exact/>
-                  <Route path={`/settings/categories/:type/add`} component={CategoryEditPage} exact/>
-                  <Route path={`/settings/categories/:type/:id`} component={CategoryEditPage} exact/>
-                  <Route path={`/settings/account/login`} component={AccountLoginPage} exact/>
-                  <Route path={`/settings/account/sign-up`} component={AccountSignUpPage} exact/>
-                  <Route path={`/settings/about`} component={AboutPage} exact/>
-                  <Redirect from="/" to="/dashboard" exact={true}/>
-                </IonRouterOutlet>
-                <IonTabBar slot="bottom">
-                  <IonTabButton tab="dashboard" href="/dashboard">
-                    <IonIcon icon={home} size={'small'}/>
-                  </IonTabButton>
-                  <IonTabButton tab="transactions" href="/transactions">
-                    <IonIcon icon={albums} size={'small'}/>
-                  </IonTabButton>
-                  <IonTabButton tab="settings" href="/settings">
-                    <IonIcon icon={settings} size={'small'}/>
-                  </IonTabButton>
-                </IonTabBar>
-              </IonTabs>
-            </IonReactRouter>
-          )
-        }
+        {this.state.loading ? (
+          <IonPage>
+            <IonContent fullscreen>
+              <IonLoading isOpen />
+            </IonContent>
+          </IonPage>
+        ) : (
+          <IonReactRouter>
+            <IonTabs>
+              <IonRouterOutlet animated={true}>
+                <Route path={'/dashboard'} component={DashboardPage} exact />
+                <Route path={`/transactions`} component={TransactionsPage} exact />
+                <Route path={`/transactions/:type/add`} component={TransactionEditPage} exact />
+                <Route path={`/transactions/:type/:id`} component={TransactionEditPage} exact />
+                <Route path={`/settings`} component={SettingsPage} exact />
+                <Route path={`/settings/categories/:type`} component={CategoriesPage} exact />
+                <Route path={`/settings/categories/:type/add`} component={CategoryEditPage} exact />
+                <Route path={`/settings/categories/:type/:id`} component={CategoryEditPage} exact />
+                <Route path={`/settings/account/login`} component={AccountLoginPage} exact />
+                <Route path={`/settings/account/sign-up`} component={AccountSignUpPage} exact />
+                <Route path={`/settings/about`} component={AboutPage} exact />
+                <Redirect from="/" to="/dashboard" exact={true} />
+              </IonRouterOutlet>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="dashboard" href="/dashboard">
+                  <IonIcon icon={home} size={'small'} />
+                </IonTabButton>
+                <IonTabButton tab="transactions" href="/transactions">
+                  <IonIcon icon={albums} size={'small'} />
+                </IonTabButton>
+                <IonTabButton tab="settings" href="/settings">
+                  <IonIcon icon={settings} size={'small'} />
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
+        )}
       </IonApp>
     )
   }

@@ -5,7 +5,7 @@ import { Transaction } from '../entities/Transaction'
 
 Object.assign(window, { localforage })
 
-export async function createConnection () {
+export async function createConnection() {
   const connection = getConnection()
 
   if (connection && connection.isConnected) {
@@ -18,14 +18,11 @@ export async function createConnection () {
     autoSave: true,
     synchronize: true,
     useLocalForage: true,
-    entities: [
-      Category,
-      Transaction
-    ]
+    entities: [Category, Transaction]
   })
 }
 
-export function getConnection () {
+export function getConnection() {
   let connection: Connection = null
 
   try {
@@ -35,7 +32,7 @@ export function getConnection () {
   return connection
 }
 
-export async function closeConnection () {
+export async function closeConnection() {
   const connection = getConnection()
 
   if (!connection.isConnected) return
