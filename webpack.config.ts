@@ -11,7 +11,7 @@ import * as dotEnv from 'dotenv'
 
 dotEnv.config()
 
-const { NODE_ENV, API_URL } = process.env
+const { NODE_ENV, API_URL, WEBPACK_PORT } = process.env
 const isProduction = NODE_ENV === 'production'
 
 const hashing = (name: string, extension: string) => {
@@ -96,6 +96,7 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
   ],
   devServer: {
     hot: true,
+    port: parseInt(WEBPACK_PORT) || 8080,
     historyApiFallback: true,
     https: true,
     proxy: {
