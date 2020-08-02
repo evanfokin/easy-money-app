@@ -17,7 +17,6 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
-  IonNote,
   IonPage,
   IonProgressBar,
   IonText,
@@ -137,25 +136,23 @@ class TransactionsPage extends React.Component<Props, State> {
                     </IonItem>
                   </IonItemSliding>
                 ))}
-                <IonItem>
-                  <IonNote style={{ fontSize: 12 }}>
-                    {(() => {
-                      const transactions = this.groupedTransactions[title]
-                      let total = 0
+                <IonItem style={{ fontSize: 12 }}>
+                  {(() => {
+                    const transactions = this.groupedTransactions[title]
+                    let total = 0
 
-                      transactions.forEach(transaction => {
-                        if (transaction.category.type === 'income') total += transaction.amount
-                        else total -= transaction.amount
-                      })
+                    transactions.forEach(transaction => {
+                      if (transaction.category.type === 'income') total += transaction.amount
+                      else total -= transaction.amount
+                    })
 
-                      return (
-                        <>
-                          <IonText style={{ marginRight: 5 }}>Подытог:</IonText>
-                          <IonText color={total >= 0 ? 'success' : 'danger'}>{formatNumber(Math.abs(total))}</IonText>
-                        </>
-                      )
-                    })()}
-                  </IonNote>
+                    return (
+                      <>
+                        <IonText style={{ marginRight: 5, color: '#a6a6a6' }}>Подытог:</IonText>
+                        <IonText color={total >= 0 ? 'success' : 'danger'}>{formatNumber(Math.abs(total))}</IonText>
+                      </>
+                    )
+                  })()}
                 </IonItem>
               </IonItemGroup>
             ))}

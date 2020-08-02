@@ -39,7 +39,7 @@ export async function addSampleData() {
     categoryRepository.create({
       type: 'income',
       name: 'Оклад',
-      budget: 50000,
+      budget: 70000,
       icon: 'cardOutline',
       transactions: _compact(
         _times(months, time => {
@@ -47,7 +47,7 @@ export async function addSampleData() {
           if (time === 0 && !checkDayX(dayX)) return
 
           return transactionRepository.create({
-            amount: 50000,
+            amount: 70000,
             date: moment().subtract(time, 'month').set('date', dayX)
           })
         })
@@ -56,7 +56,7 @@ export async function addSampleData() {
     categoryRepository.create({
       type: 'income',
       name: 'Премия',
-      budget: 7500,
+      budget: 8000,
       icon: 'happyOutline',
       transactions: _compact(
         _times(months, time => {
@@ -64,7 +64,7 @@ export async function addSampleData() {
           if (time === 0 && !checkDayX(dayX)) return
 
           return transactionRepository.create({
-            amount: getRandomNum(5000, 10000, 500),
+            amount: getRandomNum(8000, 15000, 500),
             date: moment().subtract(time, 'month').set('date', dayX)
           })
         })

@@ -35,6 +35,10 @@ const config: webpack.Configuration & { devServer?: webpackDevServer.Configurati
   module: {
     rules: [
       {
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
         test: /\.css$/,
         loaders: ['style-loader', 'css-loader']
       },

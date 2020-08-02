@@ -12,4 +12,7 @@ OfflinePluginRuntime.install({
   onUpdated: () => window.location.reload()
 })
 
+const [, theme] = window.location.search.match(/theme=(.+?)(?:&|$)/) || []
+document.querySelector('body').setAttribute('theme', ['light', 'dark'].includes(theme) ? theme : null)
+
 ReactDOM.render(<App />, document.getElementById('root'))

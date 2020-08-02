@@ -29,6 +29,7 @@ import '@ionic/react/css/flex-utils.css'
 import '@ionic/react/css/display.css'
 /* Theme variables */
 import './theme/variables.css'
+import './theme/dark-variables.scss'
 
 import { Redirect, Route } from 'react-router'
 import { albums, home, settings } from 'ionicons/icons'
@@ -44,18 +45,27 @@ import AccountLoginPage from './pages/settings/AccountLoginPage'
 import AccountSignUpPage from './pages/settings/AccountSignUpPage'
 import AboutPage from './pages/settings/AboutPage'
 import { sync } from './helpers/api'
+import { addSampleData } from './helpers/migration'
+
+const [, mode] = window.location.search.match(/mode=(.+?)(?:&|$)/) || []
 
 if (!getConfig()) {
   setupConfig({
     swipeBackEnabled: false,
     backButtonText: 'Назад',
-    mode: 'ios'
+    mode: ['ios', 'md'].includes(mode) ? (mode as 'ios' | 'md') : 'ios'
   })
 }
 
 const initPromise = new Promise(async resolve => {
   await createConnection()
   await sync(3000).catch(e => console.error(e))
+
+  if (!localStorage['firstSample']) {
+    await addSampleData()
+    localStorage['firstSample'] = 1
+  }
+
   resolve()
 })
 
